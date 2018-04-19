@@ -1,0 +1,15 @@
+
+gems:
+  - jekyll-sitemap
+
+markdown: kramdown
+
+# Defaults
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: common/page
