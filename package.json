@@ -1,0 +1,42 @@
+{
+  "name": "npm-packages",
+  "version": "0.0.0",
+  "private": true,
+  "description": "displays stats about my npm packages",
+  "main": "index.js",
+  "scripts": {
+    "browserify": "browserify src/index.js -o docs/bundle.js -t babelify",
+    "build": "npm run browserify",
+    "lint": "standard src/ --fix",
+    "postversion": "git push origin v${npm_package_version}; git push origin master",
+    "start": "budo src/index.js --open -t babelify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fibo/npm-packages.git"
+  },
+  "keywords": [
+    "npm",
+    "stats",
+    "react"
+  ],
+  "homepage": "http://g14n.info/npm-packages",
+  "author": {
+    "name": "Gianluca Casati",
+    "url": "http://g14n.info"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fibo/npm-packages/issues"
+  },
+  "devDependencies": {
+    "dot-editorconfig": "^1.1.0"
+  },
+  "dependencies": {
+    "zeroconf-redux": "^3.0.0"
+  }
+}
