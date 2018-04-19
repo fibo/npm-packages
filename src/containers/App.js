@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
-import Charts from '../components/Charts'
+import Root from '../components/Root'
 
 const mapStateToProps = state => state
 
-export default connect(mapStateToProps)
+export default connect(mapStateToProps)(Root)
