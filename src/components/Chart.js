@@ -4,6 +4,8 @@
  * @flow
  */
 
+// Credits: code stolen from https://hackernoon.com/how-and-why-to-use-d3-with-react-d239eb1ea274
+
 import React, { Component } from 'react'
 
 import { extent as d3ArrayExtent } from 'd3-array'
@@ -56,7 +58,11 @@ export default class Chart extends Component<Props> {
         width={width}
       >
         <g>
-          <path d={linePath} />
+          <path
+            d={linePath}
+            fill='transparent'
+            stroke='seagreen'
+          />
         </g>
       </svg>
     )
