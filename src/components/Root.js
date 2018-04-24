@@ -4,24 +4,24 @@
  * @flow
  */
 
-import React from 'react'
+import React, { Component } from 'react'
 
 import Chart from './Chart'
 
 type Props = {
-  packages: Array<Package>
+  stats: Array<PackageStats>
 }
 
-export default class Root extends React.Component<Props> {
+export default class Root extends Component<Props> {
   render () {
     const {
-      packages
+      stats
     } = this.props
 
     return (
-      <ul>{packages.map((pkg, i) => (
-        <li>
-          <Chart key={i} pkg={pkg} />
+      <ul>{stats.map((pkg, i) => (
+        <li key={i}>
+          <Chart pkg={pkg} />
         </li>
       ))}</ul>
     )

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import packages from './packages'
+import stats from './stats'
 
 export default combineReducers({
-  packages
+  stats
 })

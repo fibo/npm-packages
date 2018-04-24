@@ -1,7 +1,6 @@
 import initialState from '../store/initialState'
 
-export default function packages (state = initialState.packages, action) {
-  console.log(state)
+export default function packages (state = initialState.stats, action) {
   switch (action.type) {
     default: return state
   }
