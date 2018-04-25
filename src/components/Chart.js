@@ -3,41 +3,16 @@
 import React, { Component } from 'react'
 
 import staticProps from 'static-props'
-import { extent as d3ArrayExtent } from 'd3-array'
-import {
-  scaleLinear as d3ScaleLinear,
-  scaleTime as d3ScaleTime
-} from 'd3-scale'
-import { line as d3Line } from 'd3-shape'
+
+import Downloads from './Downloads'
 
 export default class Chart extends Component {
   render () {
     const {
       height,
-      pkg,
-      selectX,
-      selectY,
+      stats,
       width
     } = this.props
-
-    const { downloads } = pkg
-
-    const xScale = d3ScaleTime()
-      .domain(d3ArrayExtent(downloads, selectX))
-      .range([0, width])
-
-    const yScale = d3ScaleLinear()
-      .domain(d3ArrayExtent(downloads, selectY))
-      .range([height, 0])
-
-    const selectScaledX = d => xScale(selectX(d))
-    const selectScaledY = d => yScale(selectY(d))
-
-    const sparkLine = d3Line()
-      .x(selectScaledX)
-      .y(selectScaledY)
-
-    const linePath = sparkLine(downloads)
 
     return (
       <svg
@@ -45,11 +20,14 @@ export default class Chart extends Component {
         width={width}
       >
         <g>
-          <path
-            d={linePath}
-            fill='transparent'
-            stroke='seagreen'
-          />
+          {stats.map((stats, i) => (
+            <Downloads
+              key={i}
+              height={height}
+              stats={stats}
+              width={width}
+            />
+          ))}
         </g>
       </svg>
     )
@@ -58,9 +36,6 @@ export default class Chart extends Component {
 
 staticProps(Chart)({
   defaultProps: {
-    height: 40,
-    selectX: d => new Date(d.day),
-    selectY: d => d.downloads,
-    width: 400
+    height: 400
   }
 })
