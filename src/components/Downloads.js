@@ -6,17 +6,19 @@ import { scaleTime as d3ScaleTime } from 'd3-scale'
 import { line as d3Line } from 'd3-shape'
 
 export default class Downloads extends Component {
+  componentDidMount () {
+    this.props.fetchStats()
+  }
+
   render () {
     const {
       color,
-      stats,
+      downloads,
       selectX,
       selectY,
       yScale,
       width
     } = this.props
-
-    const { downloads } = stats
 
     const xScale = d3ScaleTime()
       .domain(d3ArrayExtent(downloads, selectX))
@@ -30,7 +32,6 @@ export default class Downloads extends Component {
       .y(selectScaledY)
 
     const linePath = sparkLine(downloads)
-    console.log(linePath)
 
     return (
       <path
@@ -44,6 +45,7 @@ export default class Downloads extends Component {
 
 staticProps(Downloads)({
   defaultProps: {
+    fetchStats: Function.prototype,
     selectX: d => new Date(d.day)
   }
 })

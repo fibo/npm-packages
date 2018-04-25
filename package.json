@@ -9,7 +9,6 @@
     "build": "npm run browserify",
     "lint": "standard --fix",
     "postversion": "git push origin v${npm_package_version}; git push origin master",
-    "postinstall": "npm run flow-typed",
     "start": "budo src/index.js --live --open -- -t babelify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

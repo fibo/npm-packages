@@ -2,10 +2,20 @@ import { connect } from 'react-redux'
 
 import Root from '../components/Root'
 
-const mapStateToProps = (state, ownProps) => {
-  const allDownloads = state.stats.reduce((all, { downloads }) => all.concat(downloads), [])
+import {
+  fetchStatsIfNeeded
+} from '../ducks/packs'
 
-  return Object.assign(state, ownProps, { allDownloads })
+const mapStateToProps = ({ packs }, ownProps) => {
+  const allDownloads = packs.reduce((all, { downloads }) => all.concat(downloads), [])
+
+  return Object.assign({ packs, allDownloads }, ownProps)
 }
 
-export default connect(mapStateToProps)(Root)
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchStats: (name) => () => dispatch(fetchStatsIfNeeded(name))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root)

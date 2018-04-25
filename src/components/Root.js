@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
 import bindme from 'bindme'
+import staticProps from 'static-props'
 
 import Chart from './Chart'
 
@@ -34,6 +35,7 @@ export default class Root extends Component {
   render () {
     const {
       allDownloads,
+      fetchStats,
       packs,
       stats
     } = this.props
@@ -45,6 +47,7 @@ export default class Root extends Component {
     return (
       <Chart
         allDownloads={allDownloads}
+        fetchStats={fetchStats}
         packs={packs}
         stats={stats}
         width={width}
@@ -52,3 +55,9 @@ export default class Root extends Component {
     )
   }
 }
+
+staticProps(Root)({
+  defaultProps: {
+    fetchStats: Function.prototype
+  }
+})

@@ -12,10 +12,10 @@ export default class Chart extends Component {
   render () {
     const {
       allDownloads,
+      fetchStats,
       height,
       packs,
       selectY,
-      stats,
       width
     } = this.props
 
@@ -29,13 +29,14 @@ export default class Chart extends Component {
         width={width}
       >
         <g>
-          {stats.map((stats, i) => (
-            <Downloads
-              key={i}
-              color={packs[i].color}
+          {packs.map(({ color, downloads, name }, i) => (
+            <Downloads key={i}
+              color={color}
+              downloads={downloads}
+              fetchStats={fetchStats(name)}
               height={height}
+              name={name}
               selectY={selectY}
-              stats={stats}
               yScale={yScale}
               width={width}
             />
@@ -48,6 +49,7 @@ export default class Chart extends Component {
 
 staticProps(Chart)({
   defaultProps: {
+    fetchStats: Function.prototype,
     height: 400,
     selectY: d => d.downloads
   }
