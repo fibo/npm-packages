@@ -1,5 +1,8 @@
 // Credits: code stolen from https://hackernoon.com/how-and-why-to-use-d3-with-react-d239eb1ea274
 
+// TODO: Try to implement animations, see
+// https://bl.ocks.org/mbostock/1256572
+// http://bl.ocks.org/herrstucki/9205257
 import React, { Component } from 'react'
 
 import { extent as d3ArrayExtent } from 'd3-array'
