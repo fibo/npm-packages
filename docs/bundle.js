@@ -28654,10 +28654,10 @@ var Chart = function (_Component) {
     value: function render() {
       var _props = this.props,
           allDownloads = _props.allDownloads,
+          fetchStats = _props.fetchStats,
           height = _props.height,
           packs = _props.packs,
           selectY = _props.selectY,
-          stats = _props.stats,
           width = _props.width;
 
 
@@ -28672,13 +28672,17 @@ var Chart = function (_Component) {
         _react2.default.createElement(
           'g',
           null,
-          stats.map(function (stats, i) {
-            return _react2.default.createElement(_Downloads2.default, {
-              key: i,
-              color: packs[i].color,
+          packs.map(function (_ref, i) {
+            var color = _ref.color,
+                downloads = _ref.downloads,
+                name = _ref.name;
+            return _react2.default.createElement(_Downloads2.default, { key: i,
+              color: color,
+              downloads: downloads,
+              fetchStats: fetchStats(name),
               height: height,
+              name: name,
               selectY: selectY,
-              stats: stats,
               yScale: yScale,
               width: width
             });
@@ -28696,6 +28700,7 @@ exports.default = Chart;
 
 (0, _staticProps2.default)(Chart)({
   defaultProps: {
+    fetchStats: Function.prototype,
     height: 400,
     selectY: function selectY(d) {
       return d.downloads;
@@ -28744,16 +28749,20 @@ var Downloads = function (_Component) {
   }
 
   _createClass(Downloads, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.props.fetchStats();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props = this.props,
           color = _props.color,
-          stats = _props.stats,
+          downloads = _props.downloads,
           selectX = _props.selectX,
           selectY = _props.selectY,
           yScale = _props.yScale,
           width = _props.width;
-      var downloads = stats.downloads;
 
 
       var xScale = (0, _d3Scale.scaleTime)().domain((0, _d3Array.extent)(downloads, selectX)).range([0, width]);
@@ -28768,7 +28777,6 @@ var Downloads = function (_Component) {
       var sparkLine = (0, _d3Shape.line)().x(selectScaledX).y(selectScaledY);
 
       var linePath = sparkLine(downloads);
-      console.log(linePath);
 
       return _react2.default.createElement('path', {
         d: linePath,
@@ -28786,6 +28794,7 @@ exports.default = Downloads;
 
 (0, _staticProps2.default)(Downloads)({
   defaultProps: {
+    fetchStats: Function.prototype,
     selectX: function selectX(d) {
       return new Date(d.day);
     }
@@ -28812,6 +28821,10 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 var _bindme = require('bindme');
 
 var _bindme2 = _interopRequireDefault(_bindme);
+
+var _staticProps = require('static-props');
+
+var _staticProps2 = _interopRequireDefault(_staticProps);
 
 var _Chart = require('./Chart');
 
@@ -28865,6 +28878,7 @@ var Root = function (_Component) {
     value: function render() {
       var _props = this.props,
           allDownloads = _props.allDownloads,
+          fetchStats = _props.fetchStats,
           packs = _props.packs,
           stats = _props.stats;
       var width = this.state.width;
@@ -28872,6 +28886,7 @@ var Root = function (_Component) {
 
       return _react2.default.createElement(_Chart2.default, {
         allDownloads: allDownloads,
+        fetchStats: fetchStats,
         packs: packs,
         stats: stats,
         width: width
@@ -28884,7 +28899,14 @@ var Root = function (_Component) {
 
 exports.default = Root;
 
-},{"./Chart":71,"bindme":1,"react":65,"react-dom":47}],74:[function(require,module,exports){
+
+(0, _staticProps2.default)(Root)({
+  defaultProps: {
+    fetchStats: Function.prototype
+  }
+});
+
+},{"./Chart":71,"bindme":1,"react":65,"react-dom":47,"static-props":68}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28897,20 +28919,34 @@ var _Root = require('../components/Root');
 
 var _Root2 = _interopRequireDefault(_Root);
 
+var _packs = require('../ducks/packs');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(state, ownProps) {
-  var allDownloads = state.stats.reduce(function (all, _ref) {
-    var downloads = _ref.downloads;
+var mapStateToProps = function mapStateToProps(_ref, ownProps) {
+  var packs = _ref.packs;
+
+  var allDownloads = packs.reduce(function (all, _ref2) {
+    var downloads = _ref2.downloads;
     return all.concat(downloads);
   }, []);
 
-  return Object.assign(state, ownProps, { allDownloads: allDownloads });
+  return Object.assign({ packs: packs, allDownloads: allDownloads }, ownProps);
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(_Root2.default);
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    fetchStats: function fetchStats(name) {
+      return function () {
+        return dispatch((0, _packs.fetchStatsIfNeeded)(name));
+      };
+    }
+  };
+};
 
-},{"../components/Root":73,"react-redux":57}],75:[function(require,module,exports){
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Root2.default);
+
+},{"../components/Root":73,"../ducks/packs":76,"react-redux":57}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28919,27 +28955,28 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = require('redux');
 
-var _stats = require('./stats');
-
-var _stats2 = _interopRequireDefault(_stats);
-
 var _packs = require('./packs');
 
 var _packs2 = _interopRequireDefault(_packs);
+
+var _timeRange = require('./timeRange');
+
+var _timeRange2 = _interopRequireDefault(_timeRange);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
   packs: _packs2.default,
-  stats: _stats2.default
+  timeRange: _timeRange2.default
 });
 
-},{"./packs":76,"./stats":77,"redux":67}],76:[function(require,module,exports){
+},{"./packs":76,"./timeRange":77,"redux":67}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.fetchStatsIfNeeded = fetchStatsIfNeeded;
 exports.default = packages;
 
 var _initialState = require('../store/initialState');
@@ -28948,17 +28985,88 @@ var _initialState2 = _interopRequireDefault(_initialState);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var FETCH_PACKAGE_STATS_FAILURE = 'FETCH_PACKAGE_STATS_FAILURE';
+var FETCH_PACKAGE_STATS_REQUEST = 'FETCH_PACKAGE_STATS_REQUEST';
+var FETCH_PACKAGE_STATS_SUCCESS = 'FETCH_PACKAGE_STATS_SUCCESS';
 var TOGGLE_PACKAGE = 'TOGGLE_PACKAGE';
+
+var checkStatus = function checkStatus(response) {
+  if (response.ok) {
+    return response;
+  } else {
+    var error = new Error(response.statusText);
+    error.response = response;
+    throw error;
+  }
+};
+
+function fetchStats(packageName, timeRange) {
+  return function (dispatch) {
+    dispatch({ type: FETCH_PACKAGE_STATS_REQUEST });
+
+    fetch('https://api.npmjs.org/downloads/range/' + timeRange + '/' + packageName).then(checkStatus).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      dispatch({
+        type: FETCH_PACKAGE_STATS_SUCCESS,
+        downloads: data.downloads,
+        packageName: packageName
+      });
+    }).catch(function (error) {
+      dispatch({
+        type: FETCH_PACKAGE_STATS_FAILURE,
+        error: error
+      });
+    });
+  };
+}
+
+function fetchStatsIfNeeded(packageName) {
+  return function (dispatch, getState) {
+    var state = getState();
+
+    if (shouldFetchStats(state, packageName)) {
+      return dispatch(fetchStats(packageName, state.timeRange));
+    }
+  };
+}
+
+function shouldFetchStats(_ref, packageName) {
+  var packs = _ref.packs;
+
+  var _packs$find = packs.find(function (_ref2) {
+    var name = _ref2.name;
+    return name === packageName;
+  }),
+      downloads = _packs$find.downloads;
+
+  return downloads.length === 0;
+}
 
 function packages() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _initialState2.default.packs;
   var action = arguments[1];
 
   switch (action.type) {
+    case FETCH_PACKAGE_STATS_FAILURE:
+      return state;
+
+    case FETCH_PACKAGE_STATS_REQUEST:
+      return state;
+
+    case FETCH_PACKAGE_STATS_SUCCESS:
+      return state.map(function (pack) {
+        if (pack.name === action.packageName) {
+          return Object.assign(pack, { downloads: action.downloads });
+        } else {
+          return pack;
+        }
+      });
+
     case TOGGLE_PACKAGE:
-      return state.map(function (_ref) {
-        var name = _ref.name,
-            selected = _ref.selected;
+      return state.map(function (_ref3) {
+        var name = _ref3.name,
+            selected = _ref3.selected;
 
         if (action.name === name) {
           return { name: name, selected: !selected };
@@ -28987,7 +29095,7 @@ var _initialState2 = _interopRequireDefault(_initialState);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function packages() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _initialState2.default.stats;
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _initialState2.default.timeRange;
   var action = arguments[1];
 
   switch (action.type) {
@@ -29015,30 +29123,9 @@ var _configureStore = require('./store/configureStore');
 
 var _configureStore2 = _interopRequireDefault(_configureStore);
 
-var _randomcolor = require('randomcolor');
-
-var _randomcolor2 = _interopRequireDefault(_randomcolor);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _configureStore2.default)({
-  stats: [{
-    name: 'algebra',
-    downloads: [{ day: '2018-04-01', downloads: 12 }, { day: '2018-04-02', downloads: 21 }, { day: '2018-04-03', downloads: 40 }, { day: '2018-04-04', downloads: 80 }]
-  }, {
-    name: 'strict-mode',
-    downloads: [{ day: '2018-04-01', downloads: 112 }, { day: '2018-04-02', downloads: 121 }, { day: '2018-04-03', downloads: 120 }, { day: '2018-04-04', downloads: 280 }]
-  }],
-  packs: [{
-    name: 'algebra',
-    color: (0, _randomcolor2.default)(),
-    selected: true
-  }, {
-    name: 'strict-mode',
-    color: (0, _randomcolor2.default)(),
-    selected: true
-  }]
-});
+var store = (0, _configureStore2.default)();
 
 var root = document.createElement('main');
 document.body.appendChild(root);
@@ -29052,7 +29139,7 @@ var _root$getBoundingClie = root.getBoundingClientRect(),
   _react2.default.createElement(_App2.default, { initialWidth: width })
 ), root);
 
-},{"./containers/App":74,"./store/configureStore":79,"randomcolor":44,"react":65,"react-dom":47,"react-redux":57}],79:[function(require,module,exports){
+},{"./containers/App":74,"./store/configureStore":79,"react":65,"react-dom":47,"react-redux":57}],79:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29090,12 +29177,23 @@ function configureStore() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _randomcolor = require('randomcolor');
+
+var _randomcolor2 = _interopRequireDefault(_randomcolor);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
-  stats: [],
-  packs: [{
-    name: 'algebra',
-    selected: true
-  }]
+  packs: ['algebra', 'dflow', 'dot-editorconfig', 'flow-view', 'games-of-life', 'npm-start-command', 'react-clipboard-icon', 'standa', 'strict-mode', 'three-orbitcontrols'].map(function (name) {
+    return {
+      name: name,
+      color: (0, _randomcolor2.default)(),
+      selected: true,
+      downloads: []
+    };
+  }),
+  timeRange: 'last-year'
 };
 
-},{}]},{},[78]);
+},{"randomcolor":44}]},{},[78]);
