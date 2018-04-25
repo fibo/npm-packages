@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import App from './containers/App'
 import configureStore from './store/configureStore'
 
+import randomColor from 'randomcolor'
+
 const store = configureStore({
   stats: [
     {
@@ -24,6 +26,18 @@ const store = configureStore({
         { day: '2018-04-03', downloads: 120 },
         { day: '2018-04-04', downloads: 280 }
       ]
+    }
+  ],
+  packs: [
+    {
+      name: 'algebra',
+      color: randomColor(),
+      selected: true
+    },
+    {
+      name: 'strict-mode',
+      color: randomColor(),
+      selected: true
     }
   ]
 })

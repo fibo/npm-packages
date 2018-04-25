@@ -10,7 +10,7 @@ export default class Root extends Component {
     super(props)
 
     bindme(this,
-     'onWindowResize'
+      'onWindowResize'
     )
 
     this.state = {
@@ -18,7 +18,7 @@ export default class Root extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const container = ReactDOM.findDOMNode(this).parentNode
 
     window.addEventListener('resize', this.onWindowResize(container))
@@ -33,6 +33,7 @@ export default class Root extends Component {
 
   render () {
     const {
+      allDownloads,
       packs,
       stats
     } = this.props
@@ -43,9 +44,10 @@ export default class Root extends Component {
 
     return (
       <Chart
-        width={width}
+        allDownloads={allDownloads}
         packs={packs}
         stats={stats}
+        width={width}
       />
     )
   }
