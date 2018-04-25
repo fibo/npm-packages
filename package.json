@@ -5,7 +5,7 @@
   "description": "displays stats about my npm packages",
   "main": "index.js",
   "scripts": {
-    "browserify": "browserify src/index.js -g [ envify --NODE_ENV production ] -o docs/bundle.js -t babelify",
+    "browserify": "browserify src/index.js -t babelify -g [ envify --NODE_ENV production ] -g uglifyify | uglifyjs --compress --mangle > docs/bundle.js",
     "build": "npm run browserify",
     "lint": "standard --fix",
     "postversion": "git push origin v${npm_package_version}; git push origin master",
@@ -45,6 +45,8 @@
     "redux-thunk": "^2.2.0",
     "standard": "^11.0.1",
     "static-props": "^1.1.1",
+    "uglify-js": "^3.3.22",
+    "uglifyify": "^4.0.5",
     "zeroconf-redux": "^3.1.0"
   }
 }
