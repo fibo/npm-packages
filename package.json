@@ -40,13 +40,10 @@
     "d3-scale": "^2.0.0",
     "d3-shape": "^1.2.0",
     "dot-editorconfig": "^1.1.0",
-    "envify": "^4.1.0",
     "randomcolor": "^0.5.3",
     "redux-thunk": "^2.2.0",
     "standard": "^11.0.1",
     "static-props": "^1.1.1",
-    "uglify-js": "^3.3.22",
-    "uglifyify": "^4.0.5",
-    "zeroconf-redux": "^3.1.0"
+    "zeroconf-redux": "^3.2.0"
   }
 }
