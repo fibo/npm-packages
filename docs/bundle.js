@@ -28640,6 +28640,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // Credits: code stolen from https://hackernoon.com/how-and-why-to-use-d3-with-react-d239eb1ea274
 
+// TODO: Try to implement animations, see
+// https://bl.ocks.org/mbostock/1256572
+// http://bl.ocks.org/herrstucki/9205257
+
+
 var Chart = function (_Component) {
   _inherits(Chart, _Component);
 

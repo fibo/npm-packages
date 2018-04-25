@@ -5,7 +5,7 @@
   "description": "displays stats about my npm packages",
   "main": "index.js",
   "scripts": {
-    "browserify": "NODE_ENV=production browserify src/index.js -o docs/bundle.js -t babelify",
+    "browserify": "browserify src/index.js -g [ envify --NODE_ENV production ] -o docs/bundle.js -t babelify",
     "build": "npm run browserify",
     "lint": "standard --fix",
     "postversion": "git push origin v${npm_package_version}; git push origin master",
@@ -40,6 +40,7 @@
     "d3-scale": "^2.0.0",
     "d3-shape": "^1.2.0",
     "dot-editorconfig": "^1.1.0",
+    "envify": "^4.1.0",
     "randomcolor": "^0.5.3",
     "redux-thunk": "^2.2.0",
     "standard": "^11.0.1",
