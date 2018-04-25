@@ -1,18 +1,8 @@
-/**
- * The root component
- *
- * @flow
- */
-
 import React, { Component } from 'react'
 
 import Chart from './Chart'
 
-type Props = {
-  stats: Array<PackageStats>
-}
-
-export default class Root extends Component<Props> {
+export default class Root extends Component {
   render () {
     const {
       stats

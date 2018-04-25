@@ -1,3 +1,7 @@
 export default {
-  stats: []
+  stats: [],
+  packs: [{
+    name: 'algebra',
+    selected: true
+  }]
 }

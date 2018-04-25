@@ -7,13 +7,10 @@
   "scripts": {
     "browserify": "NODE_ENV=production browserify src/index.js -o docs/bundle.js -t babelify",
     "build": "npm run browserify",
-    "flow": "flow",
-    "flow-typed": "npm run flow-typed_react-redux",
-    "flow-typed_react-redux": "flow-typed install react-redux@5.x.x",
     "lint": "standard --fix",
     "postversion": "git push origin v${npm_package_version}; git push origin master",
     "postinstall": "npm run flow-typed",
-    "start": "NODE_ENV=development budo src/index.js --open -- -t babelify",
+    "start": "budo src/index.js --open -- -t babelify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "pre-commit": [
@@ -33,29 +30,16 @@
     "name": "Gianluca Casati",
     "url": "http://g14n.info"
   },
-  "standard": {
-    "global": [
-      "PackageStats"
-    ],
-    "parser": "babel-eslint",
-    "plugins": [
-      "flowtype"
-    ]
-  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fibo/npm-packages/issues"
   },
   "devDependencies": {},
   "dependencies": {
-    "babel-eslint": "^8.2.3",
     "d3-array": "^1.2.1",
     "d3-scale": "^2.0.0",
     "d3-shape": "^1.2.0",
     "dot-editorconfig": "^1.1.0",
-    "eslint-plugin-flowtype": "^2.46.3",
-    "flow-bin": "^0.70.0",
-    "flow-typed": "^2.4.0",
     "redux-thunk": "^2.2.0",
     "standard": "^11.0.1",
     "static-props": "^1.1.1",
