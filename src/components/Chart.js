@@ -7,11 +7,16 @@ import React, { Component } from 'react'
 
 import { extent as d3ArrayExtent } from 'd3-array'
 import { scaleLinear as d3ScaleLinear } from 'd3-scale'
-import staticProps from 'static-props'
 
 import Downloads from './Downloads'
 
 export default class Chart extends Component {
+  static defaultProps = {
+    fetchStats: Function.prototype,
+    height: 400,
+    selectY: d => d.downloads
+  }
+
   render () {
     const {
       allDownloads,
@@ -49,11 +54,3 @@ export default class Chart extends Component {
     )
   }
 }
-
-staticProps(Chart)({
-  defaultProps: {
-    fetchStats: Function.prototype,
-    height: 400,
-    selectY: d => d.downloads
-  }
-})

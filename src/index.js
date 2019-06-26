@@ -7,8 +7,7 @@ import configureStore from './store/configureStore'
 
 const store = configureStore()
 
-const root = document.createElement('main')
-document.body.appendChild(root)
+const root = document.getElementById('root')
 const { width } = root.getBoundingClientRect()
 
 render(

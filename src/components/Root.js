@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-import bindme from 'bindme'
-import staticProps from 'static-props'
-
 import Chart from './Chart'
 
 export default class Root extends Component {
+  static defaultProps = {
+    fetchStats: Function.prototype
+  }
+
   constructor (props) {
     super(props)
-
-    bindme(this,
-      'onWindowResize'
-    )
 
     this.state = {
       width: props.initialWidth
@@ -25,7 +22,7 @@ export default class Root extends Component {
     window.addEventListener('resize', this.onWindowResize(container))
   }
 
-  onWindowResize (container) {
+  onWindowResize = (container) => {
     return () => {
       const { width } = container.getBoundingClientRect()
       this.setState({ width })
@@ -55,9 +52,3 @@ export default class Root extends Component {
     )
   }
 }
-
-staticProps(Root)({
-  defaultProps: {
-    fetchStats: Function.prototype
-  }
-})

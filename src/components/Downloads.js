@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 
-import staticProps from 'static-props'
 import { extent as d3ArrayExtent } from 'd3-array'
 import { scaleTime as d3ScaleTime } from 'd3-scale'
 import { line as d3Line } from 'd3-shape'
 
 export default class Downloads extends Component {
+  static defaultProps = {
+    fetchStats: Function.prototype,
+    selectX: d => new Date(d.day)
+  }
+
   componentDidMount () {
     this.props.fetchStats()
   }
@@ -42,10 +46,3 @@ export default class Downloads extends Component {
     )
   }
 }
-
-staticProps(Downloads)({
-  defaultProps: {
-    fetchStats: Function.prototype,
-    selectX: d => new Date(d.day)
-  }
-})
